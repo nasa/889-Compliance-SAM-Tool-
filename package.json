@@ -1,0 +1,24 @@
+{
+  "name": "samtool",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "dependencies": {
+    "fomantic-ui": "^2.9.0",
+    "gulp": "^4.0.2",
+    "gulp-cli": "^2.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.23.0",
+    "prettier": "2.7.1"
+  }
+}

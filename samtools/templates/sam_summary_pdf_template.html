@@ -1,0 +1,122 @@
+<!--
+------------------------------------------------------------------------------
+Copyright 2022 by the U. S. Government as represented by the Administrator of 
+the National Aeronautics and Space Administration.  All Other Rights Reserved.
+ 
+The 889 Compliance SAM Tool is licensed under the Apache License, Version 2.0 
+(the "License"); you may not use this file except in compliance with the 
+License. You may obtain a copy of the License at 
+http://www.apache.org/licenses/LICENSE-2.0.
+ 
+Unless required by applicable law or agreed to in writing, software 
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
+License for the specific language governing permissions and limitations under 
+the License.
+------------------------------------------------------------------------------
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Record of vendor 889 compliance</title>
+    <style>
+        @page {
+            size: letter;
+            margin: 0.25in;
+        }
+        body {
+            font-family: Helvetica Neue,Helvetica,Roboto,Arial,sans-serif!important;
+           
+            border: 15px solid #d3d3d3;
+            padding: 20px;
+        }
+        h1  {font-size: 30px;}
+        h2  {font-size: 22px;}
+        h3  {font-size: 14px;}
+        p   {font-size: 14px;}
+        #highlight {background-color: #d2e2fc; padding:0.1em 0.2em;}
+    </style>
+</head>
+<body>
+<div>
+    <h1>Summary of SAM Data</h1>
+    <p>
+        Generated on {{ date_generated }} by {{ host_url }} from sam.gov data using the openGSA SAM Entity Management API.</br>
+    </p>
+    </br>
+
+    <hr>
+
+    <h2 style='text-align: center;'>Entity Registration Summary</h2>
+    <p style='margin-bottom: 0;'>Summary for:</p>
+    <h2 style='margin-top: 0;margin-bottom: 0;'>{{ entityData['entityRegistration']['legalBusinessName'] }}</h2>
+    <p style='margin-top: 0;'>
+        {% if entityData['entityRegistration']['dbaName'] is not none %}
+            ({{ entityData['entityRegistration']['dbaName'] }})</br> 
+        {% endif %}
+        {% if entityData['coreData']['entityInformation']['entityURL'] is not none %}
+            {{ entityData['coreData']['entityInformation']['entityURL'] }}</br> 
+        {% endif %}
+        SAM: <b>{{ entityData['entityRegistration']['ueiSAM'] }}</b> </br> 
+        CAGE: <b>{{ entityData['entityRegistration']['cageCode'] }}</b>
+    </p>
+    <p>
+        {{ entityData['coreData']['physicalAddress']['addressLine1'] }} </br>
+        {% if entityData['coreData']['physicalAddress']['addressLine2'] is not none %}
+            {{ entityData['coreData']['physicalAddress']['addressLine2'] }}</br>
+        {% endif %}
+        {{ entityData['coreData']['physicalAddress']['city'] }},
+        {% if entityData['coreData']['physicalAddress']['stateOrProvinceCode'] is not none %}
+            {{ entityData['coreData']['physicalAddress']['stateOrProvinceCode'] }}
+        {% endif %}
+        
+        {% if entityData['coreData']['physicalAddress']['zipCodePlus4'] is not none %}
+            {{ entityData['coreData']['physicalAddress']['zipCode'] }}+{{ entityData['coreData']['physicalAddress']['zipCodePlus4'] }}
+        {% else %}
+            {{ entityData['coreData']['physicalAddress']['zipCode'] }}
+        {% endif %}
+        </br>
+        {{ entityData['coreData']['physicalAddress']['countryCode'] }}
+    </p>
+    <p>
+        Registration Status: <b>{{ entityData['samToolsData']['registration']['statusText'] }}</b><br/>
+        <span id='highlight'>Has Active Exclusion? <b>{{ entityData['samToolsData']['exclusions']['statusText'] }}</b></span><br/>
+        Activation Date: <b>{{ entityData['entityRegistration']['activationDate'] }}</b><br/>
+        <span id='highlight'>Expiration Date: <b>{{ entityData['entityRegistration']['registrationExpirationDate'] }}</b></span><br/>
+    </p>
+    <h3 style='text-align: center;'>(End of Entity Registration Summary)</h3>
+
+    <hr>
+
+    <h2 style='text-align: center;'>889 Compliance Section</h2>
+    <p>
+        <span id='highlight'>889 Compliance Summary:<b>
+            {{ entityData['samToolsData']['eightEightNine']['elaboratedStatusText'] }}
+        </b></span>
+    </p> 
+    <p><b>The contractor has represented as follows in 
+    FAR 52.204-26 (c){{ ' (' + entityData['samToolsData']['eightEightNine']['farProvisionDate'] + ')' if entityData['samToolsData']['eightEightNine']['farProvisionDate'] else "" }},
+    Covered Telecommunications Equipment or Services-Representation:
+    </b></p>
+    <p>
+        {% if entityData['samToolsData']['eightEightNine']['farText']['52.204-26.c.1'] is not none %}
+            <p>{{ entityData['samToolsData']['eightEightNine']['farText']['52.204-26.c.1'] }}</p>
+        {% endif %}
+        {% if entityData['samToolsData']['eightEightNine']['farText']['52.204-26.c.2'] is not none %}
+            <p>{{ entityData['samToolsData']['eightEightNine']['farText']['52.204-26.c.2'] }}</p>
+        {% endif %}
+    </p>
+    <h3 style='text-align: center;'>(End of 889 Compliance Section)</h3>
+
+    <hr>
+    
+    </br>
+    <p>
+        The full vendor record can be viewed at: </br> <a target='_blank' rel="noopener noreferrer" href="{{ external_links['SAM.GOV'] }}/entity/{{ entityData['entityRegistration']['ueiSAM'] }}/repsAndCerts?status=active">
+            {{ external_links['SAM.GOV'] }}/entity/{{ entityData['entityRegistration']['ueiSAM'] }}/repsAndCerts?status=active
+        </a>
+    </p>
+</div>
+</body>
+</html>

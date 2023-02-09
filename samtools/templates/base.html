@@ -1,0 +1,177 @@
+<!--
+------------------------------------------------------------------------------
+Copyright 2022 by the U. S. Government as represented by the Administrator of 
+the National Aeronautics and Space Administration.  All Other Rights Reserved.
+ 
+The 889 Compliance SAM Tool is licensed under the Apache License, Version 2.0 
+(the "License"); you may not use this file except in compliance with the 
+License. You may obtain a copy of the License at 
+http://www.apache.org/licenses/LICENSE-2.0.
+ 
+Unless required by applicable law or agreed to in writing, software 
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT 
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
+License for the specific language governing permissions and limitations under 
+the License.
+------------------------------------------------------------------------------
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>889 Compliance Search | SAM Tools</title>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="static/semantic/semantic.min.css"/>
+        <script src="static/semantic/semantic.min.js"></script>
+        <style>
+            html,body {
+                background-color: #FCFDFD;
+            }
+        </style>
+        <meta name="viewport" content="width=device-width, initial-scale=1">       
+    </head>
+
+    <body>
+        <header style="background-color:white; box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, .15); padding: 8px 0px;">
+            <div class="ui text container">
+                <div class="ui basic horizontal segments">
+                    <div class="ui compact basic segment">
+                        <h1 class="ui huge header">
+                            889 Compliance Search
+                            <div class="ui huge sub header" style="text-transform: capitalize;">Determine vendor 889 compliance</div>
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="ui hidden divider"></div>
+
+        <div class="ui text container">
+            <div class="ui compact basic segment">
+                <h2 class="ui large header">
+                    How to use this tool
+                </h2>
+                <div class="ui list">
+                    <div class="item">
+                        <i class="tiny middle aligned circle icon"></i>
+                        <div class="content">
+                            Search vendors to check for section 889 compliance in their SAM record.
+                        </div>
+                    </div>
+                    <div class="item">
+                        <i class="tiny middle aligned circle icon"></i>
+                        <div class="content">
+                            You will be able to download the vendor's compliance record as a PDF if:
+                        </div>
+                        <div class="ui list">
+                            <div class="item">
+                                <i class="blue check icon"></i>
+                                <div class="content">
+                                    889 Compliant: "DOES NOT" selected for both part (1) and (2) of FAR 52.204-26(c) (OCT 2020)
+                                </div>
+                            </div>
+                            <div class="item">
+                                <i class="blue check icon"></i>
+                                <div class="content">
+                                    No active exclusions
+                                </div>
+                            </div>
+                            <div class="item">
+                                <i class="blue check icon"></i>
+                                <div class="content">
+                                    Registration status is "Active"
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                Full vendor records are available at <a style="text-decoration: underline;" href="{{ external_links['SAM.GOV'] }}">sam.gov</a>.<br /> 
+                This tool is built on the <a style="text-decoration: underline;" href="{{ external_links['SAM_ENTITIES_API_DOCS'] }}">openGSA sam.gov Entity Management API</a>.
+                
+            </div>
+
+            <div class="ui divider"></div>
+
+            <div class="ui compact basic segment">
+                
+                    <div class="ui small header" style="text-transform: uppercase">
+                        Search Tips
+                    </div>
+                    <ul class="ui relaxed list">
+                        <div class="item">
+                            <i class="orange exclamation triangle icon"></i>
+                            <div class="content">
+                                Vendors marked as "For Official Use Only" in SAM will not appear in this search.
+                            </div>
+                        </div>
+                        <div class="item">
+                            <i class="file download icon"></i>
+                            <div class="content">
+                                If the vendor is not registered in SAM, you may request the vendor sign a <br />
+                                <!-- <a style="text-decoration: underline;" href="{{ external_links['NF1883'] }}" download>Agency Purchase Card Vendor Representation (NF1883)</a>. -->
+                                <a style="text-decoration: underline;" href="static/downloads/Section_889_Vendor_Representation_Example_20221207C.pdf" download>Vendor Representation Form</a>.                          
+                            </div>
+                        </div>
+                    </ul>            
+            </div>
+
+            <div class="ui divider"></div>
+            <div class="ui hidden divider"></div>
+
+            <form class="ui form" id="form">
+                <div class="field">
+                    <label>Search SAM.gov Entities Representations & Certifications</label>
+                    <div class="ui big fluid left icon input">
+                        <input id="input" class="prompt" type="text" placeholder="Search by business name, website, CAGE code, or SAM Unique Entity ID" required pattern=".*\S+.*" title="Enter a search term" autofocus>
+                        <i class="search icon"></i>
+                    </div>
+                </div>
+            </form>
+            <div id="error-message" class="ui negative message" style="display:none"></div>
+
+
+            <div id="results-box" class="ui attached fitted segment" style="display:none">
+                <div id="results-list" class="ui divided selection list"></div>
+                <div id="loading-box" class="ui loading placeholder basic segment"></div>
+            </div>
+            
+            
+            <button id="show-more" class="fluid ui bottom attached button"
+                style="margin: none; display: none">
+                <i id="show-more-icon" class="angle double down icon"></i>
+                <p id="show-more-text" style="display: inline"></p>
+            </button>
+
+            <div id="no-results" class="ui segment" style="display:none">
+                No results. Vendors marked “For Official Use Only” will not appear in this search.
+            </div>
+
+            <div class="ui fitted basic segment">
+                Note: Entities without Representations & Certifications are omitted from the search results.
+            </div>
+
+            <div class="ui right aligned basic segment">
+                {{ version }}</br>
+                We encourage input! Please provide feedback and suggestions to <a style="text-decoration: underline;" href = "mailto: {{ contact_email }}">{{ contact_email }}</a></br>
+                The 889 Compliance SAM Tool web application was developed by NASA.
+            </div>
+        </div>
+
+    </body>
+  <script type="text/javascript" src="static/client_v04.js"></script>
+  <script type="text/javascript">
+
+    {%for message in toast_messages%}
+        $(document).ready(function(){
+        $('body')
+            .toast({
+                title: 'Recent Update',
+                message: '{{message}}',
+                class: 'message',
+                displayTime: 0,
+                closeIcon: true
+            });
+        });
+    {%endfor%}
+  </script>
+</html>

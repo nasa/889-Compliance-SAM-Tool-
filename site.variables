@@ -1,0 +1,48 @@
+/*******************************
+     User Global Variables
+*******************************/
+@blue           : #1A3E8C;
+
+
+/*-------------------
+      Base Sizes
+--------------------*/
+
+/* This is the single variable that controls them all */
+@emSize   : 15px;
+
+/* The size of page text  */
+@fontSize : 15px;
+
+
+/*-------------------
+       Links
+--------------------*/
+
+@linkColor           : #1A3E8C;
+@linkUnderline       : none;
+@linkHoverColor      : #bb1122;
+@linkHoverUnderline  : @linkUnderline;
+
+
+/*-------------------
+      Disabled
+--------------------*/
+
+@disabledOpacity: 0.55;
+@disabledTextColor: rgba(40, 40, 40, 0.3);
+@invertedDisabledTextColor: rgba(225, 225, 225, 0.3);
+
+
+/* Placeholder state */
+@inputErrorPlaceholderColor: lighten(@formErrorColor, 30);
+@inputErrorPlaceholderFocusColor: lighten(@formErrorColor, 20);
+
+@inputInfoPlaceholderColor: lighten(@formInfoColor, 30);
+@inputInfoPlaceholderFocusColor: lighten(@formInfoColor, 20);
+
+@inputSuccessPlaceholderColor: lighten(@formSuccessColor, 30);
+@inputSuccessPlaceholderFocusColor: lighten(@formSuccessColor, 20);
+
+@inputWarningPlaceholderColor: lighten(@formWarningColor, 30);
+@inputWarningPlaceholderFocusColor: lighten(@formWarningColor, 20);
